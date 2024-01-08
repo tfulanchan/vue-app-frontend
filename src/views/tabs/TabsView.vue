@@ -24,7 +24,7 @@ watch(active, (nv) => {
 </template>
 
 <style>
-.center{
+.center {
   text-align: center;
 }
 </style>

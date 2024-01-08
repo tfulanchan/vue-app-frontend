@@ -35,10 +35,10 @@ const emits = defineEmits<IEmits>()
 <template>
   <div class="home-top">
     <div class="top">
-      <img class="location-icon" src="@/assets/imgs/index_page/location.png" />
+      <img class="location-icon" src="../../../../assets/img/index_page/location.png" />
       <div class="location">xing fu bei qu</div>
-      <img class="shopcart-icon" src="@/assets/imgs/index_page/shopcart.png" />
-      <img class="comments-icon" src="@/assets/imgs/index_page/comments.png" />
+      <img class="shopcart-icon" src="../../../../assets/img/index_page/shopcart.png" />
+      <img class="comments-icon" src="../../../../assets/img/index_page/comments.png" />
     </div>
     <!-- <VanSearch shape="round" background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
       placeholder="world tea drink 2989" 
@@ -52,9 +52,9 @@ const emits = defineEmits<IEmits>()
       placeholder="world tea drink 2989"
       @inputClick="emits('searchClick')" 
     >
-      <tempalte #right-icon>
+      <template #right-icon>
         <div @click="emits('searchClick')">Search</div>
-      </tempalte>
+      </template>
     </OpSearch>
     <div class="search-recommend">
       <div v-for="v in recomments" :key="v.value" class="tag"></div>
@@ -66,29 +66,24 @@ const emits = defineEmits<IEmits>()
 .home-top {
   background: linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243));
   color: white;
-
   .top {
     display: flex;
-    align-items: ceneter;
+    align-items: center;
     padding: 10px 10px 0 10px;
     line-height: 15px;
     font-size: 15px;
     font-weight: bold;
-
     .location-icon {
       width: 20px;
       height: 20px;
     }
-
     .location {
       flex: 1;
     }
-
     .shopcart-icon {
       width: 24px;
       height: 24px;
     }
-
     .comments-icon {
       width: 28px;
       height: 24px;
@@ -108,11 +103,10 @@ const emits = defineEmits<IEmits>()
   }
 }
 </style>
-
 <style lang="scss">
 .home-top {
-  .van-field_right-icon {
-      margin-right: 0;
+  .van-field__right-icon {
+    margin-right: 0;
   }
 }
 </style>
