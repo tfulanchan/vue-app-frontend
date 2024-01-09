@@ -1,8 +1,11 @@
-import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { createNamespace } from 'vant/lib/utils'
 import { clamp } from '@/utils/format'
 import { doubleRaf } from '@/utils/raf'
 import { useChildren, type NotNullChild } from '@/use/useChildren'
+import { useParent } from '@/use/useParent'
+import type { ComponentInternalInstance } from 'vue'
+import ''
 
 // 5-26
 const [name, bem] = createNamespace('swipe')
@@ -66,21 +69,25 @@ export default defineComponent({
       }
       return style
     })
-    const minOffset = computed (() => {
+    const minOffset = computed(() => {
       if (state.rect) {
-        const base = props.vertical ? state.rect.height : state.rect.width 
+        const base = props.vertical ? state.rect.height : state.rect.width
         return base - trackSize.value
       }
       return 0
     })
 
+    const activeIndicator = computed(() => {
+      return (state.active + count.value) % count.value
+    })
+
     const getTargetActive = (pace: number) => {
-      const {active} = state
-      if (pace){
-        if (props.loop){
+      const { active } = state
+      if (pace) {
+        if (props.loop) {
           return clamp(active + pace, -1, count.value)
         }
-        return clamp(active + pace, 0, count.value -1)
+        return clamp(active + pace, 0, count.value - 1)
       }
       return active
     }
@@ -91,35 +98,37 @@ export default defineComponent({
       return targetOffset
     }
 
-    const move = ({ pace = 0, offset = 0}) => {
-      if (count.value <= 1){
+    const move = ({ pace = 0, offset = 0 }) => {
+      if (count.value <= 1) {
         return
       }
       const targetActive = getTargetActive(pace)
       const targetOffset = getTargetOffset(targetActive, offset)
-      if (props.loop){
-        // scrolling left to right 
+      if (props.loop) {
+        // scrolling left to right
         // 5-27
-        if (children[0] && targetOffset !== minOffset.value){
+        if (children[0] && targetOffset !== minOffset.value) {
           const outRightBound = targetOffset > 0
-          children[0].setOffset(outRightBound ? trackSize : 0)
+          children[0].setOffset(outRightBound ? trackSize.value : 0)
         }
         // right to left
-        if (children[count.value - 1] && targetOffset !== 0){
-          const outLeftBound = targetOffset > 0
-          children[count.value -1].setOffset(outLeftBound ? -trackSize.value : 0)
+        if (children[count.value - 1] && targetOffset !== 0) {
+          const outLeftBound = targetOffset > 0;
+          (children[count.value - 1] as NotNullChild).setOffset(
+            outLeftBound ? -trackSize.value : 0
+          )
         }
       }
       state.active = targetActive
       state.offset = targetOffset
-    } 
+    }
 
     const correctPosition = () => {
       state.swiping = true
-      if (state.active <= -1){
+      if (state.active <= -1) {
         move({ pace: count.value })
-      }else if (state.active >= count.value){
-        move({ pace: -count.value})
+      } else if (state.active >= count.value) {
+        move({ pace: -count.value })
       }
     }
 
@@ -128,7 +137,7 @@ export default defineComponent({
       doubleRaf(() => {
         state.swiping = false
         move({
-          pace: 1,
+          pace: 1
         })
       })
     }
@@ -137,7 +146,7 @@ export default defineComponent({
     const stopAutoPlay = () => clearTimeout(timeout)
     const autoplay = () => {
       stopAutoPlay()
-      if(props.autoplay > 0 && count.value > 1){
+      if (props.autoplay > 0 && count.value > 1) {
         timeout = setTimeout(() => {
           next()
           autoplay()
@@ -158,12 +167,34 @@ export default defineComponent({
       state.height = rect.height
       autoplay()
     }
+
+    const renderDot = (_: string, index: number) => {
+      const active = index == activeIndicator.value
+      return <i class={bem('indicator', { active })}></i>
+    }
+
+    // 5-28
+    const renderIndicator = () => {
+      if (props.showIndicators) {
+        return <div class={bem('indicators')}>{Array(count.value).fill('').map(renderDot)}</div>
+      }
+    }
+
+    linkChildren({
+      size,
+      props
+    })
+
     onMounted(init)
+    onBeforeUnmount(stopAutoPlay)
+    watch(() => props.autoplay, autoplay)
+
     return () => (
       <div ref={root} class={bem()}>
         <div ref={track} style={trackStyle.value} class={bem('track')}>
           {slots.default?.()}
         </div>
+        {renderIndicator()}
       </div>
     )
   }
