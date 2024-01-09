@@ -5,7 +5,7 @@ import { doubleRaf } from '@/utils/raf'
 import { useChildren, type NotNullChild } from '@/use/useChildren'
 import { useParent } from '@/use/useParent'
 import type { ComponentInternalInstance } from 'vue'
-import ''
+import { useTouch } from '@/use/useTouch'
 
 // 5-26
 const [name, bem] = createNamespace('swipe')
@@ -56,14 +56,16 @@ export default defineComponent({
       active: 0,
       swiping: false
     })
+    const touch = useTouch()
     const { children, linkChildren } = useChildren(SWIPE_KEY)
+    const delta = computed(() => props.vertical ? touch.deltaY.value: touch.deltaX.value)
     const count = computed(() => children.length)
     const size = computed(() => state[props.vertical ? 'height' : 'width'])
     const trackSize = computed(() => count.value * size.value)
     const trackStyle = computed(() => {
       const mainAxis = props.vertical ? 'height' : 'width'
       const style = {
-        transitionDuration: `${state.swiping ? 0 : props.duration}`,
+        transitionDuration: `${state.swiping ? 0 : props.duration}ms`,
         transform: `translate${props.vertical ? 'Y' : 'X'}(${state.offset}px)`,
         [mainAxis]: `${trackSize.value}px`
       }
@@ -166,6 +168,39 @@ export default defineComponent({
       state.width = rect.width
       state.height = rect.height
       autoplay()
+    }
+
+    let touchStartTime : number
+
+    const onTouchStart = (event: TouchEvent) => {
+      touch.start(event)
+      touchStartTime = Date.now()
+
+      stopAutoPlay()
+      correctionPosition()
+    }
+
+    // 5-30
+    const onTouchMove = (event: TouchEvent) => {
+      touch.move(event)
+
+      event.preventDefault()
+      move({ offset: delta.value })
+    }
+    const onTouchEnd = () => {
+      const duration = Date.now() - touchStartTime
+      const speed = delta.value / duration
+      // if scrolling speed larger than 0.25 or distance larger than half, scroll to next
+      const shouldSwipe = Math.abs(speed) > 0.25 || Math.abs(delta.value) > size.value / 2
+
+      if (shouldSwipe) {
+        const offset = props.vertical ? touch.offsetY.value : touch.offsetX.value
+        let pace = 0
+        if (props.loop){
+          // offset is distance of moving
+          pace = offset > 0 ? (delta.value > 0 ? -1 : 1) : 0
+        }
+      }
     }
 
     const renderDot = (_: string, index: number) => {

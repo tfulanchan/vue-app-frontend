@@ -13,7 +13,7 @@ export default defineComponent({
     const state = reactive({
       offset: 0
     })
-    const { parent } = useParent<T>(SWIPE_KEY)
+    const { parent } = useParent(SWIPE_KEY)
 
     const style = computed(() => {
       const style: CSSProperties = {}

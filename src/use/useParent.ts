@@ -1,6 +1,6 @@
-import type { InjectionKey } from "vue";
-import { getCurrentInstance, inject, onUnmounted } from "vue";
-import type { Child } from "./useChildren";
+import type { InjectionKey } from 'vue'
+import type { Child } from './useChildren'
+import { inject, getCurrentInstance, onUnmounted } from 'vue'
 
 export type ParentProvide<T> = T & {
   link(instance: Child): void
@@ -9,10 +9,9 @@ export type ParentProvide<T> = T & {
 }
 
 export function useParent<T>(key: InjectionKey<ParentProvide<T>>) {
-
   const parent = inject(key, null)
 
-  if (!parent){
+  if (!parent) {
     return {
       parent: null,
     }
@@ -22,4 +21,8 @@ export function useParent<T>(key: InjectionKey<ParentProvide<T>>) {
   const { link, unlink } = parent
   link(instance)
   onUnmounted(() => unlink(instance))
+
+  return {
+    parent,
+  }
 }

@@ -1,7 +1,7 @@
 import { reactive, type InjectionKey, provide, type ComponentInternalInstance } from 'vue'
 import type { ParentProvide } from './useParent'
 
-export type NotNullChild = (ComponentInternalInstance & Record<string, any>) | null
+export type NotNullChild  = (ComponentInternalInstance & Record<string, any>) | null
 
 export type Child = (ComponentInternalInstance & Record<string, any>) | null
 
