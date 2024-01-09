@@ -4,9 +4,11 @@ import SearchView from '../../search/SearchView.vue'
 import { useToggle } from '@/use/useToggle'
 import { useAsync } from '@/use/useAsync'
 import { fetchHomePageData } from '@/api/home'
-import type { IHomeInfo } from '@/types'
+import type { ICountdown, IHomeInfo } from '@/types'
 import OpLoadingView from '@/components/OpLoadingView.vue'
 import TheTransformer from './components/TheTransformer.vue'
+import ScrollBar from './components/ScrollBar.vue'
+import CountDown from './components/CountDown.vue'
 
 const recomments = [
   {
@@ -20,7 +22,14 @@ const recomments = [
 ]
 const [isSearchViewShown, toggleSearchView] = useToggle(false)
 
-const { data, pending } = useAsync(fetchHomePageData, {} as IHomeInfo)
+const { data, pending } = useAsync(fetchHomePageData, {
+  banner: [],
+  searchRecomments: [],
+  transformer: [],
+  scrollBarInfoList: [],
+  countdown: {} as ICountdown,
+  activities: [],
+} as IHomeInfo)
 
 </script>
 
@@ -44,6 +53,10 @@ const { data, pending } = useAsync(fetchHomePageData, {} as IHomeInfo)
       <!-- <div>
         {{ data }}
       </div> -->
+      <ScrollBar :data="data.scrollBarInfoList" />
+      <div class="home-page__activity">
+        <CountDown :data="data.countdown" />
+      </div>
     </OpLoadingView>
     {{ pending }}
     {{ data }}

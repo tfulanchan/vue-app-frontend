@@ -1,0 +1,10 @@
+.op {
+  &-thin-border {
+   }
+
+   &-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   }
+}
