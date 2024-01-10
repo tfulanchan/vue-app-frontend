@@ -44,7 +44,7 @@ export function useCountDown(options: UseCountDownOptions) {
   const remain = ref(options.time)
   let endTime: number
   let counting: boolean
-  const current = computed(() =>   parseTime(remain))
+  const current = computed(() => parseTime(remain.value))
   let rAFId: number
 
   const pause = () => {
@@ -65,12 +65,12 @@ export function useCountDown(options: UseCountDownOptions) {
   }
 
   const microTick = () => {
-    rAFId = rAF(() => {
+    rafId = rAF(() => {
       if (counting) {
         const remainRemain = getCurrentRemain()
-        setRemain(remain)
+        setRemain(remainRemain)
 
-        if (remain.value > 0){
+        if (remain.value > 0) {
           microTick()
         }
       }

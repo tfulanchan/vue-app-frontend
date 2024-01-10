@@ -6,6 +6,8 @@ import { useChildren, type NotNullChild } from '@/use/useChildren'
 import { useParent } from '@/use/useParent'
 import type { ComponentInternalInstance } from 'vue'
 import { useTouch } from '@/use/useTouch'
+import './OpSwipe.scss'
+import { useEventListener } from '@/use/useEventListener'
 
 // 5-26
 const [name, bem] = createNamespace('swipe')
@@ -116,7 +118,7 @@ export default defineComponent({
         // right to left
         if (children[count.value - 1] && targetOffset !== 0) {
           const outLeftBound = targetOffset > 0;
-          (children[count.value - 1] as NotNullChild).setOffset(
+          (children[count.value - 1] as unknown as NotNullChild).setOffset(
             outLeftBound ? -trackSize.value : 0
           )
         }
@@ -177,7 +179,7 @@ export default defineComponent({
       touchStartTime = Date.now()
 
       stopAutoPlay()
-      correctionPosition()
+      correctPosition()
     }
 
     // 5-30
@@ -199,8 +201,15 @@ export default defineComponent({
         if (props.loop){
           // offset is distance of moving
           pace = offset > 0 ? (delta.value > 0 ? -1 : 1) : 0
+        } else {
+          pace = -Math[delta.value > 0 ? 'ceil' : 'floor'](delta.value / size.value)
         }
-      }
+        move({ pace })
+      } else {
+        move({ pace: 0 })
+      } 
+      state.swiping = false
+      autoplay()
     }
 
     const renderDot = (_: string, index: number) => {
@@ -224,9 +233,13 @@ export default defineComponent({
     onBeforeUnmount(stopAutoPlay)
     watch(() => props.autoplay, autoplay)
 
+    useEventListener('touchmove', onTouchMove, {
+      target: track
+    })
+
     return () => (
       <div ref={root} class={bem()}>
-        <div ref={track} style={trackStyle.value} class={bem('track')}>
+        <div ref={track} style={trackStyle.value} class={bem('track')} onTouchstart={onTouchStart} onTouchend={onTouchEnd}>
           {slots.default?.()}
         </div>
         {renderIndicator()}
