@@ -11,6 +11,9 @@ import ScrollBar from './components/ScrollBar.vue'
 import CountDown from './components/CountDown.vue'
 import OpSwipe from '@/components/swipe/OpSwipe'
 import OpSwipeItem from '@/components/swipe/OpSwipeItem'
+import { PRIMARY_COLOR, TRANSPARENT } from '../../../config/index'
+import { ref } from 'vue'
+import { HOME_TABS } from './config'
 
 const recomments = [
   {
@@ -33,6 +36,10 @@ const { data, pending } = useAsync(fetchHomePageData, {
   activities: [],
 } as IHomeInfo)
 
+const tabBackgroundColor = ref(TRANSPARENT)
+const onTabScroll = ({ isFixed }: {isFixed: boolean}) => {
+  tabBackgroundColor.value = isFixed ? 'white' : TRANSPARENT
+}
 </script>
 
 <template>
@@ -41,7 +48,9 @@ const { data, pending } = useAsync(fetchHomePageData, {
       <SearchView v-if="isSearchViewShown" @cancel="toggleSearchView">
       </SearchView>
     </Transition>
-    <SearchVue v-if="isSearchViewShown" @cancel="toggleSearchView"></SearchVue>
+    <div v-show="isSearchViewShown"></div>
+    <TheTop :recomments="data.searchRecomments" @searchClick="toggleSearchView" />
+    <!-- <SearchVue v-if="isSearchViewShown" @cancel="toggleSearchView"></SearchVue> -->
     <TheTop :recomments="data.searchRecomments" @searchClick="toggleSearchView" />
     <OpLoadingView :loading="pending" type="skeleton">
       <!-- <template #template>
@@ -64,6 +73,12 @@ const { data, pending } = useAsync(fetchHomePageData, {
           </OpSwipeItem>
         </OpSwipe>
       </div>
+      <VanTabs sticky offset-top="54px" :color="PRIMARY_COLOR" :background="tabBackgroundColor" @scroll="onTabScroll">
+        <!-- bottom scrollable tabs -->
+        <VanTab v-for="v in HOME_TABS" :key="v.value" :title="v.title">
+          <component :is="v.component"></component>
+        </VanTab>
+      </VanTabs>
     </OpLoadingView>
     {{ pending }}
     {{ data }}
