@@ -1,8 +1,17 @@
 import axios from 'axios'
-import { Dialog } from 'vant'
+import { Dialog, showDialog } from 'vant'
+import { useLocalStorage } from '@/use/useLocalStorage'
 
 const instance = axios.create({
   baseURL: '/api'
+})
+
+instance.interceptors.request.use((config) => {
+  const { value: token} = useLocalStorage('token', '')
+  if (config.headers && token.value){
+    config.headers['x-token'] = token.value
+  }
+  return config
 })
 
 instance.interceptors.response.use((response) => {
@@ -17,4 +26,14 @@ instance.interceptors.response.use((response) => {
     return Promise.reject(msg)
   }
   return data
+}, (err) => {
+  if (err.response && err.response.status === 401){
+    showDialog({
+      message: 'qing deng lu',
+    }).then(() => {
+      // close window login
+    })
+  }
 })
+
+export default instance
