@@ -3,7 +3,7 @@ import { useAsync } from '@/use/useAsync'
 import { fetchShopPageData } from '@/api/shop'
 import onLoadingView from '@/components/OpLoadingView.vue'
 import { useRoute } from 'vue-router'
-
+import ShopHeader from './components/ShopHeader.vue'
 
 const route = useRoute()
 const { id } = route.params
@@ -34,18 +34,13 @@ const onClickLeft = () => history.back()
 </script>
 
 <template>
-  <div class="shop-page">
-    <VanNavBar left-text="返回" left-arrow @click-left="onClickLeft"></VanNavBar>
-    <OpLoadingView :loading="pending" type="skeleton">
-      <ShopHeader :data="data"></ShopHeader>
-      <VanTabs v-model:active="active" :color="PRIMARY_COLOR" sticky animated swipeable>
-        <VanTab v-for="v in TAB_LIST" :key="v.value" :title="v.label" :name="v.value">
-          <component :is="v.component"></component>
-        </VanTab>
-      </VanTabs>
-      <ShopCart v-if="active === 1" />
-    </OpLoadingView>
-  </div>
+<div class="shop-page">
+  <VanNavBar left-text="fan hui" left-arrow @click-left="onClickLeft"></VanNavBar>
+  <OpLoadingView :loading="pending" type="skeleton">
+    <!-- {{ data.shopName }} -->
+    <ShopHeader :data="data"></ShopHeader>
+  </OpLoadingView>
+</div>
 </template>
 
 <style lang="scss">
