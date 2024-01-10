@@ -46,7 +46,6 @@ export interface IRedbag {
   if: string
 }
 
-
 export interface IDiscountContent {
   count: number
   if: number

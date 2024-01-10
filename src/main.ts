@@ -2,7 +2,7 @@
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { Tabbar, TabbarItem, Search, Icon, Loading, Skeleton, Tabs, Tab, Sticky, NavBar, Form, CellGroup, Field, Button } from 'vant'
+import { Tabbar, TabbarItem, Search, Icon, Loading, Skeleton, Tabs, Tab, Sticky, NavBar, Form, CellGroup, Field, Button, ActionSheet } from 'vant'
 
 import App from './App.vue'
 import 'vant/lib/index.css';
@@ -31,6 +31,7 @@ app.use(Form)
 app.use(CellGroup)
 app.use(Field)
 app.use(Button)
+app.use(ActionSheet)
 
 const rootValue = 16
 const rootWidth = 390
