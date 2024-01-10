@@ -1,7 +1,10 @@
-import { defineComponent, nextTick, onMounted, ref, onUpdated } from "vue";
-import { Loading as VanLoading } from "vant";
-import { createNamespace } from "vant/lib/utils";
-import { useEventListener } from "@/use/useEventListener";
+import { defineComponent, nextTick, onMounted, ref, onUpdated } from 'vue';
+import { Loading as VanLoading } from 'vant';
+import { createNamespace } from 'vant/lib/utils';
+import { useEventListener } from '@/use/useEventListener';
+import { useRect } from '@/use/useRect'
+import { useScrollParenet } from '@/use/useScrollParenet';
+import './OpList.scss'
 
 const [name, bem] = createNamespace('list')
 
@@ -37,6 +40,7 @@ export default defineComponent ({
 
     const check = () => {
       nextTick(() => {
+        console.log('========check', loading.value)
         if (loading.value || props.finished) {
           return
         }
