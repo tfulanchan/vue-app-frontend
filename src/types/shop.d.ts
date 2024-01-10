@@ -27,3 +27,29 @@ export interface IActivity {
   tips?: string
   infos?: string[]
 }
+
+export interface IShopDetail extends IShop {
+  announcement: string
+  discounts: IDiscount[]
+  redbags: IRedbag[]
+}
+
+export interface IDiscount {
+  type: number
+  label: string
+  content: IDiscountContent[]
+}
+
+export interface IRedbag {
+  type: number
+  count: number
+  if: string
+}
+
+
+export interface IDiscountContent {
+  count: number
+  if: number
+  limit: number
+  label: string
+}
