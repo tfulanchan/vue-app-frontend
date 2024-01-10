@@ -35,10 +35,10 @@ const emits = defineEmits<IEmits>()
 <template>
   <div class="home-top">
     <div class="top">
-      <img class="location-icon" src="../../../../assets/img/index_page/location.png" />
+      <img class="location-icon" src="../../../../assets/imgs/index_page/location.png" />
       <div class="location">xing fu bei qu</div>
-      <img class="shopcart-icon" src="../../../../assets/img/index_page/shopcart.png" />
-      <img class="comments-icon" src="../../../../assets/img/index_page/comments.png" />
+      <img class="shopcart-icon" src="../../../../assets/imgs/index_page/shopcart.png" />
+      <img class="comments-icon" src="../../../../assets/imgs/index_page/comments.png" />
     </div>
     <!-- <VanSearch shape="round" background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
       placeholder="world tea drink 2989" 

@@ -9,6 +9,7 @@ import 'vant/lib/index.css';
 import router from './router'
 
 import './assets/common.scss'
+import lazyPlugin from './directives/lazyLoading';
 
 const app = createApp(App)
 
@@ -24,6 +25,7 @@ app.use(Skeleton)
 app.use(Tabs)
 app.use(Tab)
 app.use(Sticky)
+app.use(lazyPlugin)
 
 const rootValue = 16
 const rootWidth = 390

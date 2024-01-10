@@ -51,7 +51,6 @@ const onTabScroll = ({ isFixed }: {isFixed: boolean}) => {
     <div v-show="isSearchViewShown"></div>
     <TheTop :recomments="data.searchRecomments" @searchClick="toggleSearchView" />
     <!-- <SearchVue v-if="isSearchViewShown" @cancel="toggleSearchView"></SearchVue> -->
-    <TheTop :recomments="data.searchRecomments" @searchClick="toggleSearchView" />
     <OpLoadingView :loading="pending" type="skeleton">
       <!-- <template #template>
         <div>loading</div>

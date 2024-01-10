@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 
 const getDirection = (x: number, y: number) => {
-  if (x > y){
+  if (x > y) {
     return 'horizontal'
   }
-  if ( y > x){
+  if (y > x) {
     return 'vertical'
   }
   return ''
@@ -17,7 +17,7 @@ export function useTouch() {
   const deltaY = ref(0)
   const offsetX = ref(0)
   const offsetY = ref(0)
-  const direction = ref(0)
+  const direction = ref('')
   const isVertical = () => direction.value === 'vertical'
   const isHorizontal = () => direction.value === 'horizontal'
 
@@ -35,15 +35,18 @@ export function useTouch() {
   }
   const move = (event: TouchEvent) => {
     const touch = event.touches[0]
+
     deltaX.value = (touch.clientX < 0 ? 0 : touch.clientX) - startX.value
     deltaY.value = touch.clientY - startY.value
-    offestX.value = Math.abs(deltaX.value)
+    offsetX.value = Math.abs(deltaX.value)
     offsetY.value = Math.abs(deltaY.value)
+
     const LOCK_DIRECTION_DISTANCE = 10
     if (
-      !direction.value || 
-      (offsetX.value < LOCK_DIRECTION_DISTANCE && offsetY.value < LOCK_DIRECTION_DISTANCE) ) {
-      direction.value = getDirection(offsetX, offsetY)
+      !direction.value ||
+      (offsetX.value < LOCK_DIRECTION_DISTANCE && offsetY.value < LOCK_DIRECTION_DISTANCE)
+    ) {
+      direction.value = getDirection(offsetX.value, offsetY.value)
     }
   }
 
@@ -60,6 +63,5 @@ export function useTouch() {
     direction,
     isVertical,
     isHorizontal,
-
   }
 }

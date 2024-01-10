@@ -2,27 +2,40 @@
 import { ref } from 'vue'
 import type { IShop } from '@/types'
 import { fetchShopList } from '@/api/shop'
-import OpList from '../../../../components/list/OpList'
+// import OpList from '@/components/'
 import ShopItem from './ShopItem.vue'
+import { defineComponent } from 'vue'
 
-const page = 1
-const shopList = ref([] as IShop[])
-const loading = ref(false)
-const finished = ref(false)
+export default defineComponent({
+  name: 'ShopList',
+  setup() {
+    const page = 1
+    const shopList = ref([] as IShop[])
+    const loading = ref(false)
+    const finished = ref(false)
 
-const onLoad = async () => {
-  const { data, total } = await fetchShopList({
-    _page: page,
-    _limit: 5,
-  })
-  shopList.value.push(...data)
-  loading.value = false
+    const onLoad = async () => {
+      const { data, total } = await fetchShopList({
+        _page: page,
+        _limit: 5,
+      })
+      shopList.value.push(...data)
+      loading.value = false
 
-  if (shopList.value.length >= total) {
-    finished.value = true
+      if (shopList.value.length >= total) {
+        finished.value = true
+      }
+    }
+    return {
+      page,
+      shopList,
+      loading,
+      finished,
+      onLoad
+    }
   }
 
-}
+})
 </script>
 
 <template>

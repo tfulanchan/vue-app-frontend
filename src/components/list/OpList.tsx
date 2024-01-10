@@ -103,7 +103,7 @@ export default defineComponent ({
       const Content = slots.default?.()
       const Placeholder = <div ref={placeholder} class={bem('placeholder')}
       return {
-        <div ref={root} class={bem()}>
+       <div ref={root} class={bem()}>
           {props.direction === 'down' ? Content : Placeholder}
           {renderLoading()}
           {renderFinishedText()}

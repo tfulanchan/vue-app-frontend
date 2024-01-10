@@ -24,7 +24,7 @@ const { current } = countDown
 <template>
   <div class="home-count-down">
     <div class="home-count-down__info">
-      <img src="@/assets/imgs/index_page/count_down.png" />
+      <img src="../../../../assets/imgs/index_page/count-down.png" />
       <span class="number">{{ padStart(current.hours)}}</span>
       <span class="colon">:</span>
       <span class="number">{{ padStart(current.minutes)}}</span>
