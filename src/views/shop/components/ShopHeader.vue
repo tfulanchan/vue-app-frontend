@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { IShopDetail } from '@/types'
 import { computed } from 'vue';
 import { useToggle } from '../../../use/useToggle'
 import type { IDiscount, IShopDetail, IDiscountContent } from '@/types'
@@ -15,7 +16,7 @@ interface IProps {
   data: IShopDetail
 }
 const props = defineProps<IProps>()
-const [isPopupShown, showPopup] = useToggle(false)
+const [isPopupshown, showPopup] = useToggle(false)
 
 const topThreeServices = computed(() => props.data.service.slice(0, 3))
 
@@ -44,7 +45,6 @@ const formatter = (v: IDiscount) => {
   }
   return ''
 }
-
 // const discountList = computed(() => {
 //   return props.data.discounts.map((v) => {
 //     return{
@@ -137,8 +137,7 @@ const formatter = (v: IDiscount) => {
       </div>
       <h4>优惠</h4>
       <div class="discount">
-        <!-- <div v-for="v in discountList" :key="v.type"> -->
-          <div v-for="v in data.discounts" :key="v.type">
+        <div v-for="v in data.discounts" :key="v.type">
           <div>{{ v.label }}</div>
           <div>{{ formatter(v) }}</div>
         </div>
