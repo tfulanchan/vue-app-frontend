@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import type { IGood } from '@/types';
-
+import CartControl from './CartControl.vue';
 
 interface IProps {
   data: IGood
@@ -33,7 +33,9 @@ const gotoGoods = () => {
         </div>
         <div class="old">${{ data.oldPrice }}</div>
       </div>
-      <div class="cart-control-wrapper">+</div>
+      <div class="cart-control-wrapper">
+        <CartControl :data="data" />
+      </div>
     </div>
   </div>
 </template>
