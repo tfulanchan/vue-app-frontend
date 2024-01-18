@@ -5,6 +5,7 @@ import { fetchGoodsListData } from '@/api/goods'
 import { useRoute } from 'vue-router';
 import type { IMenu } from '@/types';
 import { ref } from 'vue';
+import GoodsItem from './GoodsItem.vue'
 
 const route = useRoute()
 const { id } = route.params
@@ -22,7 +23,7 @@ const categoryActive = ref(0)
       <div class="list">
         <template v-for="v in data" :key="v.label">
           <div class="category-name">{{ v.label }}</div>
-          <div v-for="cv in v.goods" :key="cv.id">{{ cv.name }}</div>  
+          <GoodsItem v-for="cv in v.goods" :key="cv.id" :data="cv" />  
         </template>
       </div>
     </div>
@@ -38,6 +39,7 @@ const categoryActive = ref(0)
   display: flex;
 
   .list {
+    flex: 1;
     margin: 0 10px;
 
     .category-name {

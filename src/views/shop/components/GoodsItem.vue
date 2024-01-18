@@ -1,0 +1,85 @@
+<script setup lang="ts">
+import router from '@/router';
+import type { IGood } from '@/types';
+
+
+interface IProps {
+  data: IGood
+}
+const props = defineProps<IProps>()
+
+const gotoGoods = () => {
+  router.push({
+    name: 'goods',
+    params: { id: props.data.id },
+  })
+}
+
+</script>
+
+<template>
+  <div class="shop-goods-item" @click="gotoGoods">
+    <img class="img" v-lazy="data.imgUrl">
+    <div class="cotent">
+      <div class="name">{{ data.name }}</div>
+      <div class="tips op-ellipsis" v-if="data.tips">{{ data.tips }}</div>
+      <div class="extra">
+        <span class="count">monthly sales {{ data.sellCount }}</span>
+        <span>rating {{ data.rating }}</span>
+      </div>
+      <div class="price">
+        <div class="now">
+          $<span>{{ data.price }}</span>
+        </div>
+        <div class="old">${{ data.oldPrice }}</div>
+      </div>
+      <div class="cart-control-wrapper">+</div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.shop-goods-item {
+  display: flex;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.img {
+  width: 85px;
+  height: 85px;
+  border-radius: 5px;
+}
+
+.content {
+  flex: 1;
+  margin-left: 10px;
+  position: relative;
+
+  .name {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 4px;
+
+    .now {
+      color: red;
+      margin-right: 4px;
+
+      span {
+        font-size: 18px;
+      }
+    }
+
+    .old {
+      color: gray;
+      text-decoration: line-through;
+    }
+
+    .cart-control-wrapper {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  }
+}
+</style>
