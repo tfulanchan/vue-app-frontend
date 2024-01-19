@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IShopDetail } from '@/types'
 import { computed } from 'vue';
 import { useToggle } from '../../../use/useToggle'
 import type { IDiscount, IShopDetail, IDiscountContent } from '@/types'
@@ -16,13 +15,13 @@ interface IProps {
   data: IShopDetail
 }
 const props = defineProps<IProps>()
-const [isPopupshown, showPopup] = useToggle(false)
+const [isPopupShown, showPopup] = useToggle(false)
 
 const topThreeServices = computed(() => props.data.service.slice(0, 3))
 
 const reduction = computed(() => {
   const reduction = props.data.discounts.find((v) => v.type === DiscountEnum.Reduction)
-  return reduction ? reduction.content: []
+  return reduction ? reduction.content : []
 })
 const reductionLabel = computed(() => {
   return reduction.value.map(v => `man${v.if}jian${v.count}`)
@@ -161,29 +160,36 @@ const formatter = (v: IDiscount) => {
 
     .info__left {
       flex: 1;
+
       .shop-name {
         width: 90%;
         font-size: 19px;
         font-weight: bold;
         margin: 6px 0 8px 0;
       }
+
       .delivery {
         display: flex;
+
         .delivery-tag {
           color: var(--op-primary-color);
           padding: 1px 5px;
+
           &::before {
             border: 1px solid var(--op-primary-color);
           }
         }
+
         .delivery-time {
           margin-left: 10px;
         }
+
         .monthly-count {
           margin-left: 10px;
         }
       }
     }
+
     .info__right {
       img {
         width: 50px;
@@ -191,6 +197,7 @@ const formatter = (v: IDiscount) => {
       }
     }
   }
+
   &__service {
     display: flex;
     margin-bottom: 5px;
@@ -199,9 +206,11 @@ const formatter = (v: IDiscount) => {
       margin-right: 5px;
     }
   }
+
   &__announcement {
     color: gray;
   }
+
   &__redbags {
     display: flex;
     margin-top: 10px;
@@ -211,6 +220,7 @@ const formatter = (v: IDiscount) => {
       color: white;
       margin-right: 5px;
       display: flex;
+
       .redbag-left {
         display: flex;
         align-items: center;
@@ -218,11 +228,13 @@ const formatter = (v: IDiscount) => {
         border-radius: 4px 2px 2px 4px;
         border-right: 2px dashed rgb(252, 91, 68);
         background: linear-gradient(to right, rgb(252, 120, 85), rgb(252, 91, 68));
+
         .count {
           font-size: 18px;
           margin-right: 4px;
         }
       }
+
       .redbag-right {
         display: flex;
         align-items: center;
@@ -232,6 +244,7 @@ const formatter = (v: IDiscount) => {
       }
     }
   }
+
   &__discounts {
     display: flex;
     margin-top: 10px;
@@ -246,6 +259,7 @@ const formatter = (v: IDiscount) => {
       padding: 0 4px;
       margin-right: 5px;
       margin-bottom: 2px;
+
       &::before {
         border: 1px solid rgb(247, 68, 68);
       }
@@ -257,10 +271,12 @@ const formatter = (v: IDiscount) => {
 
     .content {
       margin: 20px 10px;
+
       h4 {
         font-size: 15px;
         margin: 10px 0;
       }
+
       .red-bag,
       .menbership {
         display: flex;
@@ -284,6 +300,7 @@ const formatter = (v: IDiscount) => {
           width: 90px;
           text-align: center;
         }
+
         .flex-col {
           flex-direction: column;
         }
@@ -293,12 +310,15 @@ const formatter = (v: IDiscount) => {
           font-weight: bold;
           margin-bottom: 5px;
         }
+
         .detail {
           font-size: 12px;
           color: var(--van-gray-7);
         }
+
         .r {
           width: 90px;
+
           .receive {
             font-size: 13px;
             width: 75px;
@@ -307,6 +327,7 @@ const formatter = (v: IDiscount) => {
             color: white;
             border-radius: 15px;
           }
+
           .open {
             font-size: 13px;
             width: 75px;
@@ -316,15 +337,18 @@ const formatter = (v: IDiscount) => {
             border-radius: 15px;
           }
         }
+
         .op-center {
           display: flex;
           justify-content: center;
           align-items: center;
         }
+
         .flex {
           flex: 1;
         }
       }
+
       .red-bag {
         .count {
           color: rgb(252, 76, 60);
@@ -332,6 +356,7 @@ const formatter = (v: IDiscount) => {
           align-items: flex-end;
         }
       }
+
       .menbership {
         .count {
           color: rgb(133, 71, 0);
@@ -341,5 +366,4 @@ const formatter = (v: IDiscount) => {
       }
     }
   }
-}
-</style>
+}</style>

@@ -9,6 +9,7 @@ import GoodsList from './components/GoodsList.vue'
 import OpTodo from '../tabs/home/components/OpTodo.vue'
 import { ref } from 'vue'
 import ShopCartVue from './components/ShopCart.vue'
+import { useLockScroll } from '@/use/useLockScroll'
 
 const TAB_LIST = [
 {
@@ -73,6 +74,7 @@ const onClickLeft = () => history.back()
 </template>
 
 <style lang="scss">
+// set layer upon popup
 .shop-page {
   .van-tabs__line,
   .van-nav-bar {
