@@ -3,14 +3,22 @@ import OpLoadingView from '@/components/OpLoadingView.vue';
 import { useAsync } from '@/use/useAsync';
 import { fetchGoodsListData } from '@/api/goods'
 import { useRoute } from 'vue-router';
-import type { IMenu } from '@/types';
+import type { IGood, IMenu } from '@/types';
 import { ref } from 'vue';
 import GoodsItem from './GoodsItem.vue'
+import { useCartStore } from '@/stores/cart'
+import { watch } from 'vue';
 
 const route = useRoute()
 const { id } = route.params
-const { data, pending } = useAsync(() => fetchGoodsListData(id as string).then((v) => v.data), [] as IMenu[])
-
+const { data, pending } = useAsync(
+  () => fetchGoodsListData(id as string).then((v) => v.data), [] as IMenu[]
+)
+const { setCartItems } = useCartStore()
+watch(data, (nv) => {
+  const cartGoods = nv.reduce((p: IGood[], v: IMenu) => [...p, ...v.goods], []).filter((v) => v.cartCount)
+  setCartItems(cartGoods)
+})
 const categoryActive = ref(0)
 </script>
 

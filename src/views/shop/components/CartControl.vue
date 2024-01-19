@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import type { IGood } from '@/types';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useCartStore } from '@/stores/cart';
 
 interface IProps {
   data: IGood
 }
 const props = defineProps<IProps>()
 
-const cartCount = ref(props.data.cartCount)
+const store = useCartStore()
+const cartCount = computed(() => store.cartCountById(props.data.id))
+// const cartCount = ref(props.data.cartCount)
 const minus = () => {
-  cartCount.value--
+  // cartCount.value--
+  store.removeProductFromCart(props.data)
 }
 const add = () => {
-  cartCount.value++
+  // cartCount.value++
+  store.pushProductToCart(props.data)
 }
 </script>
 
