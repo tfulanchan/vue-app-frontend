@@ -6,12 +6,22 @@ import EmptyCartLogo from '@/assets/imgs/shop_page/shop-cart/shop-cart-o.png'
 import { useToggle } from '@/use/useToggle';
 import GoodsItem from './GoodsItem.vue';
 import { showConfirmDialog } from 'vant';
+import {useTransition } from '@/use/useTransition'
+import {useEventBus} from '@/use/useEventBus'
 
 const store = useCartStore()
 const packageFee = ref(5)
 
 const cartLogo = computed(() => store.total ? CartLogo : EmptyCartLogo)
 const [isCartListShown, toggleCartListShown] = useToggle(false)
+
+// inter component event
+const eventBus = useEventBus()
+const { items, start, beforeEnter, enter, afterEnter } = useTransition()
+eventBus.on('cart-add', (el) => {
+  start(el)
+})
+
 const showCartListPopup = () => {
   if (!store.total) {
     return
@@ -84,7 +94,7 @@ const removeAll = () => {
                 ${{ store.totalOldPrice }}
               </span>
             </template>
-            <span class="cart-info__price-empty">wei xuan gou xiang pin</span>
+            <span v-else class="cart-info__price-empty">wei xuan gou xiang pin</span>
           </div>
           <div v-else class="cart-info__desc">ling xu pei shong fei {{ packageFee }}</div>
         </div>
@@ -97,7 +107,193 @@ const removeAll = () => {
         <div v-else class="order-btn order-btn--empty">$20 min delivery</div>
       </div>
     </div>
+    <div class="shop-cart__ball-container">
+      <div v-for="(v, i) in items" :key="i">
+        <Transition @beforeEnter="beforeEnter" @enter="enter" @afterEnter="afterEnter">
+          <div v-show="v.isShown" class="ball">y
+            <div class="inner"></div>x
+          </div>
+        </Transition>
+      </div>
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+.shop-cart {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: white;
+  --van-checkbox-size: 16px;
+
+  &__popup {
+    background: var(--op-gray-bg-color);
+    .popup__all {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 10px;
+      background: white;
+      .all-label {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .all-total {
+        flex: 1;
+        color: gray;
+        font-size: 12px;
+      }
+      .all-remove {
+        color: gray;
+      }
+    }
+
+    .popup__goods {
+      margin-bottom: 10px;
+      padding: 15px 10px 0 10px;
+      background: white;
+      max-height: 400px;
+      overflow: auto;
+      .goods-item {
+        display: flex;
+        margin-bottom: 15px;
+        .van-checkbox {
+          margin-right: 10px;
+        }
+
+        .flex {
+          flex: 1;
+        }
+      }
+    }
+
+    .popup__fee {
+      padding: 14px;
+      font-size: 14px;
+      background: rgb(254, 254, 254);
+      .label {
+        margin-left: 30px;
+        font-size: 14px;
+        color: gray;
+        .fee {
+          color: red;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  &__tips {
+    text-align: center;
+    background: rgb(253, 245, 222);
+    font-size: 12px;
+    padding: 8px 0;
+    span {
+      color: rgb(255, 61, 61);
+    }
+    .tips-detail {
+      color: gray;
+    }
+  }
+  &__content {
+    width: 100%;
+    padding: 0px 10px;
+    height: 45px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .content__left {
+      display: flex;
+      align-items: center;
+      .cart-logo {
+        position: relative;
+        img {
+          width: 50px;
+          height: 44px;
+        }
+        .total {
+          position: absolute;
+          right: 0;
+          top: 2px;
+          transform: translateX(40%);
+          width: 17px;
+          height: 17px;
+          background: rgb(255, 61, 61);
+          color: white;
+          border-radius: 50%;
+          text-align: center;
+          font-size: 12px;
+          line-height: 17px;
+        }
+      }
+
+      .cart-info {
+        color: gray;
+        margin-left: 10px;
+        font-size: 12px;
+
+        &__price {
+          line-height: 18px;
+
+          &--now {
+            font-weight: bold;
+            color: rgb(20, 16, 16);
+            span {
+              font-size: 18px;
+            }
+          }
+          &--old {
+            text-decoration: line-through;
+          }
+          &--empty {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    .content__right {
+      .order-btn {
+        height: 36px;
+        padding: 0 18px;
+        text-align: center;
+        color: white;
+        border-radius: 18px;
+        font-size: 12px;
+        background: var(--op-primary-color);
+        .label {
+          font-size: 14px;
+          padding-top: 2px;
+        }
+
+        &--empty {
+          font-size: 16px;
+          background: rgb(152, 152, 152);
+          line-height: 36px;
+        }
+      }
+    }
+  }
+
+  &__ball-container {
+    .ball {
+      position: fixed;
+      bottom: 10px;
+      left: 25px;
+      transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41);
+      .inner {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--op-primary-color);
+        transition: all 0.4s linear;
+      }
+    }
+  }
+}
+</style>
