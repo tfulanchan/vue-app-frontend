@@ -53,6 +53,7 @@ const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
   shopName: '',
   tops: [],
 })
+// 7-14
 useLockScroll(() => active.value === 1)
 
 const onClickLeft = () => history.back()

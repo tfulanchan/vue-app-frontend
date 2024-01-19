@@ -3,6 +3,7 @@ import { onMountedOrActivated } from './onMountedOrActivated'
 
 let totalLockCount = 0
 
+// common
 const BODY_LOCK_CLASS = 'op-overflow-hidden'
 
 export function useLockScroll(shouldLock: () => boolean) {
