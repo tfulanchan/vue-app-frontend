@@ -8,6 +8,7 @@ import { PRIMARY_COLOR } from '@/config'
 import GoodsList from './components/GoodsList.vue'
 import OpTodo from '../tabs/home/components/OpTodo.vue'
 import { ref } from 'vue'
+import ShopCartVue from './components/ShopCart.vue'
 
 const TAB_LIST = [
 {
@@ -47,7 +48,7 @@ const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
   postUrl: '',
   bgUrl: '',
   score: 0,
-  services: [],
+  service: [],
   shopName: '',
   tops: [],
 })
@@ -61,11 +62,12 @@ const onClickLeft = () => history.back()
   <VanNavBar left-text=" return back" left-arrow @click-left="onClickLeft"></VanNavBar>
   <OpLoadingView :loading="pending" type="skeleton">
     <ShopHeader :data="data"></ShopHeader>
-    <VanTabs v-moel="active" :color="PRIMARY_COLOR" sticky animated swipeable>
+    <VanTabs v-model:active="active" :color="PRIMARY_COLOR" sticky animated swipeable>
       <VanTab v-for="v in TAB_LIST" :key="v.value" :title="v.label" :name="v.value">
         <component :is="v.component"></component>
       </VanTab>
     </VanTabs>
+    <ShopCartVue v-if="active === 1" />
   </OpLoadingView>
 </div>
 </template>
