@@ -1,4 +1,6 @@
 import { ref } from 'vue'
+import { useTimeout } from '@/use/useTimeout'
+import { useLifeHook } from './useLifeHook'
 
 interface IEnterItem {
   isShown: boolean
@@ -6,12 +8,13 @@ interface IEnterItem {
 }
 
 export function useTransition(count = 10) {
-  const createItems = (_count) => {
+  const { onUnmounted } = useLifeHook()
+  const createItems = (_count: number) => {
     const result = []
     for (let i = 0; i < _count; i++) {
-      result.psuh({
+      result.push({
         isShown: false,
-        el: {} as HTMLElement,  
+        el: {} as HTMLElement
       })
     }
     return result
@@ -28,7 +31,7 @@ export function useTransition(count = 10) {
   }
   // 7-11
   const beforeEnter = (el: Element) => {
-    const item = enteredItems[enteredItems,length - 1]
+    const item = enteredItems[enteredItems.length - 1]
     const rect = item.el.getBoundingClientRect()
     const x = rect.left - 32
     const y = -(window.innerHeight - rect.top - 22)
@@ -41,13 +44,18 @@ export function useTransition(count = 10) {
   }
   const enter = (el: Element, done: () => void) => {
     el.addEventListener('transitioned', done)
-    setTimeout(() => {
-      ;(el as HTMLElement).style.transform = `translate3d(0, 0, 0)`
-      const inner = el.getElementsByClassName('inner')[0] as HTMLElement
-      if (inner) {
-        inner.style.transform = `translated3d(0, 0, 0)`
-      }
-    })
+    // setTimeout(() => {
+    useTimeout(
+      () => {
+        ;(el as HTMLElement).style.transform = `translate3d(0, 0, 0)`
+        const inner = el.getElementsByClassName('inner')[0] as HTMLElement
+        if (inner) {
+          inner.style.transform = `translated3d(0, 0, 0)`
+        }
+      },
+      undefined,
+      onUnmounted
+    )
   }
   const afterEnter = (el: Element) => {
     const item = enteredItems.shift()
@@ -57,12 +65,11 @@ export function useTransition(count = 10) {
       ;(el as HTMLElement).style.display = 'none'
     }
   }
-    return {
-      items,
-      start,
-      beforeEnter,
-      enter,
-      afterEnter,
-    }
-
+  return {
+    items,
+    start,
+    beforeEnter,
+    enter,
+    afterEnter
+  }
 }
