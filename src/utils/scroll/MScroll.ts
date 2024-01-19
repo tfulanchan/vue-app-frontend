@@ -21,7 +21,7 @@ export class MScrollConstructor extends EventEmitter {
     if (this.setContent(wrapper)) {
       return
     }
-    this.options = new OptionsConstructor().merge()
+    this.options = new OptionsConstructor().merge(options)
     this.init(wrapper)
   }
   private setContent(wrapper: HTMLElement) {
