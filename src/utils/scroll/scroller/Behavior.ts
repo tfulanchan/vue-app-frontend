@@ -77,7 +77,7 @@ export default class Behavior {
   ) {
     const distance = current - start
     const speed = Math.abs(distance) / time
-    const { deceleration, swipeBounceTime, swipeTime } = options
+    const { deceleration, swipeBounceTime, swipeTime } = this.options
     const duration = Math.min(swipeTime, (speed * 2) / deceleration)
     const momentumData = {
       destination: current + ((speed * speed) / deceleration) * (distance < 0 ? -1 : 1),
@@ -129,7 +129,7 @@ export default class Behavior {
   }
   end(duration: number) {
     let momentumInfo: { destination?: number; duration?: number } = {
-      // destination: 0,
+      destination: 0,
       duration: 0,
     }
     const absDist = Math.abs(this.currentPos - this.startPos)
