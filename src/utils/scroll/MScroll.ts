@@ -1,5 +1,5 @@
 import { EventEmitter } from './shared-utils/event';
-import { OptionsConstructor, type Options } from './OptionsConstructor';
+import { OptionsConstructor, type Options } from './Options';
 import Scroller from './scroller/Scroller'
 import { ease } from './shared-utils/ease'
 

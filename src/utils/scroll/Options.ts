@@ -1,4 +1,7 @@
-
+export type Bounces = [boolean, boolean]
+export type Rect = {
+  size: string
+}
 interface BaseOptions {
   scrollX: boolean
   scrollY: boolean
@@ -15,7 +18,11 @@ export interface Options extends BaseOptions {
   startX: number
   startY: number
 }
-export type BehaviorOptions = BaseOptions 
+export interface BehaviorOptions extends BaseOptions {
+  scrollable: boolean
+  bounces: Bounces
+  rect: Rect
+}
 
 export class OptionsConstructor implements Options {
   [key: string]: unknown
